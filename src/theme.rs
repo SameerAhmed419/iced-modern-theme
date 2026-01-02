@@ -3,13 +3,13 @@
 //! This module provides the main `Modern` struct and implementations
 //! for styling each Iced component with Modern-inspired designs.
 
-use iced::{Border, Color, Shadow, Theme, Background, Vector};
 use iced::overlay::menu;
+use iced::{Background, Border, Color, Shadow, Theme, Vector};
 
 /// Modern design-inspired text input style implementation
 fn text_input_style(theme: &Theme, status: TextInputStatus) -> text_input::Style {
     let colors = get_theme_colors(theme);
-    
+
     let base_style = text_input::Style {
         background: Background::Color(colors.input_bg),
         border: Border {
@@ -22,7 +22,7 @@ fn text_input_style(theme: &Theme, status: TextInputStatus) -> text_input::Style
         value: colors.text,
         selection: colors.blue.scale_alpha(0.3),
     };
-    
+
     match status {
         TextInputStatus::Active => base_style,
         TextInputStatus::Hovered => text_input::Style {
@@ -32,7 +32,7 @@ fn text_input_style(theme: &Theme, status: TextInputStatus) -> text_input::Style
             },
             ..base_style
         },
-        TextInputStatus::Focused  { is_hovered: _ }  => text_input::Style {
+        TextInputStatus::Focused { is_hovered: _ } => text_input::Style {
             border: Border {
                 color: colors.blue,
                 width: 2.0,
@@ -55,7 +55,7 @@ fn text_input_style(theme: &Theme, status: TextInputStatus) -> text_input::Style
 /// Modern design-inspired pick list style implementation
 fn pick_list_style(theme: &Theme, status: pick_list::Status) -> pick_list::Style {
     let colors = get_theme_colors(theme);
-    
+
     // Base style
     let base_style = pick_list::Style {
         text_color: colors.text,
@@ -68,7 +68,7 @@ fn pick_list_style(theme: &Theme, status: pick_list::Status) -> pick_list::Style
         },
         handle_color: colors.placeholder,
     };
-    
+
     match status {
         pick_list::Status::Active => base_style,
         pick_list::Status::Hovered => pick_list::Style {
@@ -78,7 +78,7 @@ fn pick_list_style(theme: &Theme, status: pick_list::Status) -> pick_list::Style
             },
             ..base_style
         },
-        pick_list::Status::Opened  { is_hovered: _ }  => pick_list::Style {
+        pick_list::Status::Opened { is_hovered: _ } => pick_list::Style {
             border: Border {
                 color: colors.blue,
                 width: 1.5,
@@ -98,20 +98,40 @@ fn combo_box_style(theme: &Theme, status: TextInputStatus) -> text_input::Style 
 
 /// Create a complete Modern-styled theme
 fn create_modern_theme(dark_mode: bool) -> Theme {
-    let name = if dark_mode { "Modern Dark" } else { "Modern Light" };
-    
+    let name = if dark_mode {
+        "Modern Dark"
+    } else {
+        "Modern Light"
+    };
+
     // Define the base colors
     let (background, text) = if dark_mode {
         (Color::from_rgb(0.11, 0.11, 0.12), Color::WHITE) // #1C1C1E (dark bg)
     } else {
         (Color::from_rgb(0.95, 0.95, 0.97), Color::BLACK) // #F2F2F7 (light bg)
     };
-    
-    let primary = if dark_mode { MODERN_BLUE_DARK } else { MODERN_BLUE_LIGHT };
-    let success = if dark_mode { MODERN_GREEN_DARK } else { MODERN_GREEN_LIGHT };
-    let danger = if dark_mode { MODERN_RED_DARK } else { MODERN_RED_LIGHT };
-    let warning = if dark_mode { MODERN_ORANGE_DARK } else { MODERN_ORANGE_LIGHT };
-    
+
+    let primary = if dark_mode {
+        MODERN_BLUE_DARK
+    } else {
+        MODERN_BLUE_LIGHT
+    };
+    let success = if dark_mode {
+        MODERN_GREEN_DARK
+    } else {
+        MODERN_GREEN_LIGHT
+    };
+    let danger = if dark_mode {
+        MODERN_RED_DARK
+    } else {
+        MODERN_RED_LIGHT
+    };
+    let warning = if dark_mode {
+        MODERN_ORANGE_DARK
+    } else {
+        MODERN_ORANGE_LIGHT
+    };
+
     // Create the Modern theme
     Theme::custom(
         String::from(name),
@@ -122,14 +142,14 @@ fn create_modern_theme(dark_mode: bool) -> Theme {
             success,
             danger,
             warning,
-        }
+        },
     )
 }
 
 /// Modern design-inspired radio button style implementation
 fn radio_style(theme: &Theme, status: radio::Status) -> radio::Style {
     let colors = get_theme_colors(theme);
-    
+
     // Base style
     let style = radio::Style {
         background: Background::Color(Color::TRANSPARENT),
@@ -142,7 +162,7 @@ fn radio_style(theme: &Theme, status: radio::Status) -> radio::Style {
         },
         text_color: Some(colors.text),
     };
-    
+
     // Adjust for hover state
     match status {
         radio::Status::Hovered { is_selected: true } => style,
@@ -157,7 +177,7 @@ fn radio_style(theme: &Theme, status: radio::Status) -> radio::Style {
 /// Modern design-inspired checkbox style implementation
 fn checkbox_style(theme: &Theme, status: checkbox::Status) -> checkbox::Style {
     let colors = get_theme_colors(theme);
-    
+
     match status {
         checkbox::Status::Active { is_checked } => {
             if is_checked {
@@ -183,7 +203,7 @@ fn checkbox_style(theme: &Theme, status: checkbox::Status) -> checkbox::Style {
                     text_color: Some(colors.text),
                 }
             }
-        },
+        }
         checkbox::Status::Hovered { is_checked } => {
             if is_checked {
                 checkbox::Style {
@@ -208,7 +228,7 @@ fn checkbox_style(theme: &Theme, status: checkbox::Status) -> checkbox::Style {
                     text_color: Some(colors.text),
                 }
             }
-        },
+        }
         checkbox::Status::Disabled { is_checked } => {
             if is_checked {
                 checkbox::Style {
@@ -233,22 +253,23 @@ fn checkbox_style(theme: &Theme, status: checkbox::Status) -> checkbox::Style {
                     text_color: Some(colors.text.scale_alpha(0.5)),
                 }
             }
-        },
+        }
     }
 }
 
 /// Modern design-inspired container style
 fn container_style(theme: &Theme, class: &style::Container) -> container::Style {
     let colors = get_theme_colors(theme);
-    
+
     match class {
         style::Container::Transparent => container::Style {
             text_color: Some(colors.text),
             background: None,
             border: Border::default(),
             shadow: Shadow::default(),
+            snap: true,
         },
-        
+
         style::Container::Card => {
             container::Style {
                 text_color: Some(colors.text),
@@ -259,20 +280,24 @@ fn container_style(theme: &Theme, class: &style::Container) -> container::Style 
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 2.0),
                     blur_radius: 8.0,
                 },
+                snap: true,
             }
-        },
-        
+        }
+
         style::Container::Sheet => {
             let sheet_bg = if is_dark_mode(theme) {
                 Color::from_rgb(0.22, 0.22, 0.23) // #383839 (dark mode sheet)
             } else {
                 Color::from_rgb(0.95, 0.95, 0.97) // #F2F2F7 (light mode sheet)
             };
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(sheet_bg)),
@@ -282,20 +307,24 @@ fn container_style(theme: &Theme, class: &style::Container) -> container::Style 
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.2, ..Color::BLACK },
+                    color: Color {
+                        a: 0.2,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 4.0),
                     blur_radius: 16.0,
                 },
+                snap: true,
             }
-        },
-        
+        }
+
         style::Container::Group => {
             let group_bg = if is_dark_mode(theme) {
                 Color::from_rgb(0.17, 0.17, 0.18) // #2C2C2E (dark mode group)
             } else {
                 Color::from_rgb(0.95, 0.95, 0.97) // #F2F2F7 (light mode group)
             };
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(group_bg)),
@@ -305,27 +334,32 @@ fn container_style(theme: &Theme, class: &style::Container) -> container::Style 
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow::default(), // No shadow for groups
+                snap: true,
             }
-        },
-        
+        }
+
         style::Container::Sidebar => {
             let sidebar_bg = if is_dark_mode(theme) {
                 Color::from_rgb(0.15, 0.15, 0.16) // #262628 (dark mode sidebar)
             } else {
                 Color::from_rgb(0.92, 0.92, 0.93) // #EAEAEE (light mode sidebar)
             };
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(sidebar_bg)),
                 border: Border::default(),
                 shadow: Shadow {
-                    color: Color { a: 0.05, ..Color::BLACK },
+                    color: Color {
+                        a: 0.05,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(1.0, 0.0),
                     blur_radius: 3.0,
                 },
+                snap: true,
             }
-        },
+        }
     }
 }
 
@@ -349,7 +383,7 @@ fn button_hover_style(base_style: button::Style, is_dark: bool) -> button::Style
             }
         }
     };
-    
+
     if let Some(Background::Color(color)) = base_style.background {
         button::Style {
             background: Some(Background::Color(adjust_color(color))),
@@ -380,14 +414,14 @@ fn button_pressed_style(base_style: button::Style, is_dark: bool) -> button::Sty
             }
         }
     };
-    
+
     let mut pressed_style = base_style;
     pressed_style.shadow = Shadow::default(); // Remove shadow when pressed
-    
+
     if let Some(Background::Color(color)) = base_style.background {
         pressed_style.background = Some(Background::Color(adjust_color(color)));
     }
-    
+
     pressed_style
 }
 
@@ -403,12 +437,13 @@ fn button_disabled_style(base_style: button::Style) -> button::Style {
             ..base_style.border
         },
         shadow: Shadow::default(), // No shadow for disabled buttons
+        snap: true,
     }
 }
 
-use iced::widget::{button, text, text_input, container, radio, checkbox, pick_list, combo_box};
 use iced::widget::button::Status as ButtonStatus;
 use iced::widget::text_input::Status as TextInputStatus;
+use iced::widget::{button, checkbox, combo_box, container, pick_list, radio, text, text_input};
 
 use crate::colors::*;
 use crate::styles::*;
@@ -507,7 +542,7 @@ impl Modern {
         pick_list_style
     }
 
-/*     /// Get an Modern-style theme for combo boxes
+    /*     /// Get an Modern-style theme for combo boxes
     pub fn combo_box<'a>() -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         combo_box_style
     } */
@@ -528,13 +563,13 @@ impl Modern {
     }
 
     // Additional button styles using more Modern colors
-    
+
     /// Get a teal button style (cyan-blue)
     pub fn teal_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
             let is_dark = is_dark_mode(theme);
-            
+
             let modern_base = |color: Color, text_color: Color| button::Style {
                 background: Some(Background::Color(color)),
                 text_color,
@@ -544,110 +579,18 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 2.0,
                 },
+                snap: true,
             };
-            
+
             let base_style = modern_base(colors.teal, Color::WHITE);
-            
-            match status {
-                ButtonStatus::Active => base_style,
-                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
-                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
-                ButtonStatus::Disabled => button_disabled_style(base_style),
-            }
-        }
-    }
-    
-    /// Get an indigo button style (blue-purple)
-    pub fn indigo_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
-        move |theme, status| {
-            let colors = get_theme_colors(theme);
-            let is_dark = is_dark_mode(theme);
-            
-            let modern_base = |color: Color, text_color: Color| button::Style {
-                background: Some(Background::Color(color)),
-                text_color,
-                border: Border {
-                    radius: CORNER_RADIUS.into(),
-                    width: 0.0,
-                    color: Color::TRANSPARENT,
-                },
-                shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
-                    offset: Vector::new(0.0, 1.0),
-                    blur_radius: 2.0,
-                },
-            };
-            
-            let base_style = modern_base(colors.indigo, Color::WHITE);
-            
-            match status {
-                ButtonStatus::Active => base_style,
-                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
-                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
-                ButtonStatus::Disabled => button_disabled_style(base_style),
-            }
-        }
-    }
-    
-    /// Get a purple button style
-    pub fn purple_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
-        move |theme, status| {
-            let colors = get_theme_colors(theme);
-            let is_dark = is_dark_mode(theme);
-            
-            let modern_base = |color: Color, text_color: Color| button::Style {
-                background: Some(Background::Color(color)),
-                text_color,
-                border: Border {
-                    radius: CORNER_RADIUS.into(),
-                    width: 0.0,
-                    color: Color::TRANSPARENT,
-                },
-                shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
-                    offset: Vector::new(0.0, 1.0),
-                    blur_radius: 2.0,
-                },
-            };
-            
-            let base_style = modern_base(colors.purple, Color::WHITE);
-            
-            match status {
-                ButtonStatus::Active => base_style,
-                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
-                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
-                ButtonStatus::Disabled => button_disabled_style(base_style),
-            }
-        }
-    }
-    
-    /// Get a pink button style
-    pub fn pink_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
-        move |theme, status| {
-            let colors = get_theme_colors(theme);
-            let is_dark = is_dark_mode(theme);
-            
-            let modern_base = |color: Color, text_color: Color| button::Style {
-                background: Some(Background::Color(color)),
-                text_color,
-                border: Border {
-                    radius: CORNER_RADIUS.into(),
-                    width: 0.0,
-                    color: Color::TRANSPARENT,
-                },
-                shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
-                    offset: Vector::new(0.0, 1.0),
-                    blur_radius: 2.0,
-                },
-            };
-            
-            let base_style = modern_base(colors.pink, Color::WHITE);
-            
+
             match status {
                 ButtonStatus::Active => base_style,
                 ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
@@ -657,19 +600,12 @@ impl Modern {
         }
     }
 
-     /// Get an Modern-style gray button (neutral, subdued appearance)
-     pub fn gray_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
+    /// Get an indigo button style (blue-purple)
+    pub fn indigo_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
             let is_dark = is_dark_mode(theme);
-            
-            // Gray color varies by theme
-            let gray_color = if is_dark {
-                colors::gray::GRAY3_DARK
-            } else {
-                colors::gray::GRAY4_LIGHT
-            };
-            
+
             let modern_base = |color: Color, text_color: Color| button::Style {
                 background: Some(Background::Color(color)),
                 text_color,
@@ -679,14 +615,18 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK }, 
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 2.0,
                 },
+                snap: true,
             };
-            
-            let base_style = modern_base(gray_color, colors.text);
-            
+
+            let base_style = modern_base(colors.indigo, Color::WHITE);
+
             match status {
                 ButtonStatus::Active => base_style,
                 ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
@@ -695,13 +635,130 @@ impl Modern {
             }
         }
     }
-    
-    /// Get an Modern-style tinted button (semi-transparent colored background)
-    pub fn tinted_button<'a>(color_variant: TintedButtonColor) -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
+
+    /// Get a purple button style
+    pub fn purple_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
             let is_dark = is_dark_mode(theme);
-            
+
+            let modern_base = |color: Color, text_color: Color| button::Style {
+                background: Some(Background::Color(color)),
+                text_color,
+                border: Border {
+                    radius: CORNER_RADIUS.into(),
+                    width: 0.0,
+                    color: Color::TRANSPARENT,
+                },
+                shadow: Shadow {
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
+                    offset: Vector::new(0.0, 1.0),
+                    blur_radius: 2.0,
+                },
+                snap: true,
+            };
+
+            let base_style = modern_base(colors.purple, Color::WHITE);
+
+            match status {
+                ButtonStatus::Active => base_style,
+                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
+                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
+                ButtonStatus::Disabled => button_disabled_style(base_style),
+            }
+        }
+    }
+
+    /// Get a pink button style
+    pub fn pink_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
+        move |theme, status| {
+            let colors = get_theme_colors(theme);
+            let is_dark = is_dark_mode(theme);
+
+            let modern_base = |color: Color, text_color: Color| button::Style {
+                background: Some(Background::Color(color)),
+                text_color,
+                border: Border {
+                    radius: CORNER_RADIUS.into(),
+                    width: 0.0,
+                    color: Color::TRANSPARENT,
+                },
+                shadow: Shadow {
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
+                    offset: Vector::new(0.0, 1.0),
+                    blur_radius: 2.0,
+                },
+                snap: true,
+            };
+
+            let base_style = modern_base(colors.pink, Color::WHITE);
+
+            match status {
+                ButtonStatus::Active => base_style,
+                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
+                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
+                ButtonStatus::Disabled => button_disabled_style(base_style),
+            }
+        }
+    }
+
+    /// Get an Modern-style gray button (neutral, subdued appearance)
+    pub fn gray_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
+        move |theme, status| {
+            let colors = get_theme_colors(theme);
+            let is_dark = is_dark_mode(theme);
+
+            // Gray color varies by theme
+            let gray_color = if is_dark {
+                colors::gray::GRAY3_DARK
+            } else {
+                colors::gray::GRAY4_LIGHT
+            };
+
+            let modern_base = |color: Color, text_color: Color| button::Style {
+                background: Some(Background::Color(color)),
+                text_color,
+                border: Border {
+                    radius: CORNER_RADIUS.into(),
+                    width: 0.0,
+                    color: Color::TRANSPARENT,
+                },
+                shadow: Shadow {
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
+                    offset: Vector::new(0.0, 1.0),
+                    blur_radius: 2.0,
+                },
+                snap: true,
+            };
+
+            let base_style = modern_base(gray_color, colors.text);
+
+            match status {
+                ButtonStatus::Active => base_style,
+                ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
+                ButtonStatus::Pressed => button_pressed_style(base_style, is_dark),
+                ButtonStatus::Disabled => button_disabled_style(base_style),
+            }
+        }
+    }
+
+    /// Get an Modern-style tinted button (semi-transparent colored background)
+    pub fn tinted_button<'a>(
+        color_variant: TintedButtonColor,
+    ) -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
+        move |theme, status| {
+            let colors = get_theme_colors(theme);
+            let is_dark = is_dark_mode(theme);
+
             // Get the base color based on the variant
             let (base_color, text_color) = match color_variant {
                 TintedButtonColor::Blue => (colors.blue, Color::WHITE),
@@ -713,7 +770,7 @@ impl Modern {
                 TintedButtonColor::Pink => (colors.pink, Color::WHITE),
                 TintedButtonColor::Indigo => (colors.indigo, Color::WHITE),
             };
-            
+
             // Make color semi-transparent for tinted look
             let tinted_color = Color {
                 r: base_color.r,
@@ -721,7 +778,7 @@ impl Modern {
                 b: base_color.b,
                 a: 0.2, // Low opacity for tinted appearance
             };
-            
+
             // For tinted buttons, we usually want a stronger text color
             let modern_base = |color: Color, text_color: Color| button::Style {
                 background: Some(Background::Color(color)),
@@ -732,14 +789,18 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.05, ..Color::BLACK }, // Lighter shadow for tinted
+                    color: Color {
+                        a: 0.05,
+                        ..Color::BLACK
+                    }, // Lighter shadow for tinted
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 2.0,
                 },
+                snap: true,
             };
-            
+
             let base_style = modern_base(tinted_color, base_color); // Use the base color for text
-            
+
             match status {
                 ButtonStatus::Active => base_style,
                 ButtonStatus::Hovered => button_hover_style(base_style, is_dark),
@@ -748,55 +809,55 @@ impl Modern {
             }
         }
     }
-    
+
     /// Get an Modern-style blue tinted button
     pub fn blue_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Blue)
     }
-    
+
     /// Get an Modern-style green tinted button
     pub fn green_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Green)
     }
-    
+
     /// Get an Modern-style red tinted button
     pub fn red_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Red)
     }
-    
+
     /// Get an Modern-style orange tinted button
     pub fn orange_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Orange)
     }
-    
+
     /// Get an Modern-style purple tinted button
     pub fn purple_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Purple)
     }
-    
+
     /// Get an Modern-style teal tinted button
     pub fn teal_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Teal)
     }
-    
+
     /// Get an Modern-style indigo tinted button
     pub fn indigo_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Indigo)
     }
-    
+
     /// Get an Modern-style pink tinted button
     pub fn pink_tinted_button<'a>() -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         Self::tinted_button(TintedButtonColor::Pink)
     }
-    
+
     /// Size variants for buttons (small, medium, large)
     pub fn sized_button<'a>(
         style_fn: impl Fn(&Theme, ButtonStatus) -> button::Style + 'a,
-        size: ButtonSize
+        size: ButtonSize,
     ) -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         move |theme, status| {
             let mut base_style = style_fn(theme, status);
-            
+
             // Modify the border radius based on size
             base_style.border = Border {
                 radius: match size {
@@ -806,42 +867,41 @@ impl Modern {
                 },
                 ..base_style.border
             };
-            
+
             base_style
         }
     }
 
-
     /// Create a "selected" version of any button style
-    /// 
+    ///
     /// This function takes any button style and creates a modified version where
     /// the default appearance matches what would normally be the pressed state.
     /// This is perfect for navigation items to show which item is currently selected.
     pub fn selected_button_style<'a>(
-        base_style_fn: impl Fn(&Theme, ButtonStatus) -> button::Style + 'a
+        base_style_fn: impl Fn(&Theme, ButtonStatus) -> button::Style + 'a,
     ) -> impl Fn(&Theme, ButtonStatus) -> button::Style + 'a {
         move |theme, status| {
             let is_dark = is_dark_mode(theme);
-            
+
             match status {
                 ButtonStatus::Active => {
                     // For the active state, use what would normally be the pressed state
                     let base_style = base_style_fn(theme, ButtonStatus::Active);
                     button_pressed_style(base_style, is_dark)
-                },
+                }
                 // For other states, use the original style function
                 _ => base_style_fn(theme, status),
             }
         }
     }
-    
+
     // Container variants
-    
+
     /// Get a container with separator line style
     pub fn separated_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(colors.background)),
@@ -851,15 +911,16 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow::default(),
+                snap: true,
             }
         }
     }
-    
+
     /// Get a branded container with accent color border
     pub fn accent_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(colors.background)),
@@ -869,10 +930,14 @@ impl Modern {
                     color: colors.blue,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 2.0),
                     blur_radius: 4.0,
                 },
+                snap: true,
             }
         }
     }
@@ -881,7 +946,7 @@ impl Modern {
     pub fn toolbar_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(colors.system_bg)),
@@ -891,19 +956,23 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.05, ..Color::BLACK },
+                    color: Color {
+                        a: 0.05,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 2.0,
                 },
+                snap: true,
             }
         }
     }
-    
+
     /// Get a floating panel container style
     pub fn floating_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-            
+
             container::Style {
                 text_color: Some(colors.text),
                 background: Some(Background::Color(colors.card_bg)),
@@ -913,10 +982,14 @@ impl Modern {
                     color: Color::TRANSPARENT,
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.25, ..Color::BLACK },
+                    color: Color {
+                        a: 0.25,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 4.0),
                     blur_radius: 16.0,
                 },
+                snap: true,
             }
         }
     }
@@ -925,23 +998,31 @@ impl Modern {
     pub fn danger_tooltip_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-    
+
             // Determine if dark mode
             let dark_mode = is_dark_mode(theme);
-    
+
             container::Style {
                 text_color: Some(if dark_mode {
                     Color::from_rgb(1.0, 0.6, 0.6) // lighter red for better contrast
                 } else {
                     Color::from_rgb(0.7, 0.0, 0.0) // slightly darker red for better readability
                 }),
-                background: Some(Background::Color(
-                    if dark_mode {
-                        Color { r: 0.4, g: 0.1, b: 0.1, a: 1.0 }  // More saturated dark red
-                    } else {
-                        Color { r: 1.0, g: 0.92, b: 0.92, a: 1.0 }  // softer, clearer red
-                    }
-                )),
+                background: Some(Background::Color(if dark_mode {
+                    Color {
+                        r: 0.4,
+                        g: 0.1,
+                        b: 0.1,
+                        a: 1.0,
+                    } // More saturated dark red
+                } else {
+                    Color {
+                        r: 1.0,
+                        g: 0.92,
+                        b: 0.92,
+                        a: 1.0,
+                    } // softer, clearer red
+                })),
                 border: Border {
                     radius: 6.0.into(),
                     width: 1.0,
@@ -952,10 +1033,16 @@ impl Modern {
                     },
                 },
                 shadow: Shadow {
-                    color: Color { r: 0.0, g: 0.0, b: 0.0, a: 0.15 },
+                    color: Color {
+                        r: 0.0,
+                        g: 0.0,
+                        b: 0.0,
+                        a: 0.15,
+                    },
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 3.0,
                 },
+                snap: true,
             }
         }
     }
@@ -964,46 +1051,58 @@ impl Modern {
     pub fn warning_tooltip_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             let colors = get_theme_colors(theme);
-            
+
             container::Style {
-                text_color: Some(colors.orange),  // Orange text for warnings
-                background: Some(Background::Color(
-                    if is_dark_mode(theme) {
-                        // Darker theme - subtle orange-brown background
-                        Color { r: 0.3, g: 0.15, b: 0.0, a: 0.7 }
-                    } else {
-                        // Light theme - very subtle light orange background
-                        Color { r: 1.0, g: 0.96, b: 0.9, a: 1.0 }
+                text_color: Some(colors.orange), // Orange text for warnings
+                background: Some(Background::Color(if is_dark_mode(theme) {
+                    // Darker theme - subtle orange-brown background
+                    Color {
+                        r: 0.3,
+                        g: 0.15,
+                        b: 0.0,
+                        a: 0.7,
                     }
-                )),
+                } else {
+                    // Light theme - very subtle light orange background
+                    Color {
+                        r: 1.0,
+                        g: 0.96,
+                        b: 0.9,
+                        a: 1.0,
+                    }
+                })),
                 border: Border {
-                    radius: 6.0.into(),  // Slightly rounded corners
+                    radius: 6.0.into(), // Slightly rounded corners
                     width: 1.0,
-                    color: colors.orange,  // Orange border to match the warning theme
+                    color: colors.orange, // Orange border to match the warning theme
                 },
                 shadow: Shadow {
-                    color: Color { a: 0.1, ..Color::BLACK },
+                    color: Color {
+                        a: 0.1,
+                        ..Color::BLACK
+                    },
                     offset: Vector::new(0.0, 1.0),
                     blur_radius: 2.0,
                 },
+                snap: true,
             }
         }
     }
 
     /// Dynamically choose between danger, warning and standard tooltip container styles
     pub fn conditional_tooltip_container<'a>(
-        validation_state: ValidationState
+        validation_state: ValidationState,
     ) -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             match validation_state {
                 ValidationState::Error => {
                     // Call the danger function and immediately apply it
                     (Self::danger_tooltip_container())(theme)
-                },
+                }
                 ValidationState::Warning => {
                     // Call the warning function and immediately apply it
                     (Self::warning_tooltip_container())(theme)
-                },
+                }
                 ValidationState::Valid => {
                     // Call a standard container style for consistent padding/sizing
                     // You could use card_container or create a specific info_tooltip_container
@@ -1015,7 +1114,7 @@ impl Modern {
 
     ///  Simple conditional container if you don't want / need a warning state
     pub fn validated_tooltip_container<'a>(
-        has_error: bool
+        has_error: bool,
     ) -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
             if has_error {
@@ -1027,15 +1126,14 @@ impl Modern {
             }
         }
     }
-    
-    
+
     // Text input variants
-    
+
     /// Get a search input style with rounded corners
     pub fn search_input<'a>() -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
-            
+
             let base_style = text_input::Style {
                 background: Background::Color(colors.system_bg),
                 border: Border {
@@ -1048,7 +1146,7 @@ impl Modern {
                 value: colors.text,
                 selection: colors.selection,
             };
-            
+
             match status {
                 TextInputStatus::Active => base_style,
                 TextInputStatus::Hovered => base_style,
@@ -1064,12 +1162,12 @@ impl Modern {
             }
         }
     }
-    
+
     /// Get an inline text input style with bottom border only
     pub fn inline_text_input<'a>() -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
-            
+
             let base_style = text_input::Style {
                 background: Background::Color(Color::TRANSPARENT),
                 border: Border {
@@ -1082,7 +1180,7 @@ impl Modern {
                 value: colors.text,
                 selection: colors.selection,
             };
-            
+
             match status {
                 TextInputStatus::Active => base_style,
                 TextInputStatus::Hovered => text_input::Style {
@@ -1092,7 +1190,7 @@ impl Modern {
                     },
                     ..base_style
                 },
-                TextInputStatus::Focused { is_hovered: _ }  => text_input::Style {
+                TextInputStatus::Focused { is_hovered: _ } => text_input::Style {
                     border: Border {
                         color: colors.blue,
                         width: 2.0,
@@ -1116,27 +1214,35 @@ impl Modern {
     pub fn danger_text_input<'a>() -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
-            
+
             // Start with base text input style
             let base_style = text_input_style(theme, status);
-            
+
             // Override with error styling
             text_input::Style {
                 border: Border {
-                    color: colors.red,  // Use red border for error indication
+                    color: colors.red, // Use red border for error indication
                     width: 1.0,
                     ..base_style.border
                 },
                 // You could add a light red background for increased visibility
-                background: Background::Color(
-                    if is_dark_mode(theme) {
-                        // Darker theme - subtle dark red
-                        Color { r: 0.3, g: 0.0, b: 0.0, a: 0.2 }
-                    } else {
-                        // Light theme - very subtle light red
-                        Color { r: 1.0, g: 0.9, b: 0.9, a: 1.0 }
+                background: Background::Color(if is_dark_mode(theme) {
+                    // Darker theme - subtle dark red
+                    Color {
+                        r: 0.3,
+                        g: 0.0,
+                        b: 0.0,
+                        a: 0.2,
                     }
-                ),
+                } else {
+                    // Light theme - very subtle light red
+                    Color {
+                        r: 1.0,
+                        g: 0.9,
+                        b: 0.9,
+                        a: 1.0,
+                    }
+                }),
                 ..base_style
             }
         }
@@ -1144,18 +1250,18 @@ impl Modern {
 
     /// Dynamically choose between danger, warning and inline text input styles
     pub fn conditional_text_input<'a>(
-        validation_state: ValidationState
+        validation_state: ValidationState,
     ) -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             match validation_state {
                 ValidationState::Error => {
                     // Call the danger function and immediately apply it
                     (Self::danger_text_input())(theme, status)
-                },
+                }
                 ValidationState::Warning => {
                     // Call the warning function and immediately apply it
                     (Self::warning_text_input())(theme, status)
-                },
+                }
                 ValidationState::Valid => {
                     // Call the inline function and immediately apply it
                     (Self::inline_text_input())(theme, status)
@@ -1166,7 +1272,7 @@ impl Modern {
 
     // Simple conditional text_input if you don't need/want a warning state
     pub fn validated_text_input<'a>(
-        has_error: bool
+        has_error: bool,
     ) -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             if has_error {
@@ -1176,16 +1282,16 @@ impl Modern {
             }
         }
     }
-    
+
     // Get an modern warning theme for text inputs with validation errors
     pub fn warning_text_input<'a>() -> impl Fn(&Theme, TextInputStatus) -> text_input::Style + 'a {
         move |theme, status| {
             let colors = get_theme_colors(theme);
             let base_style = text_input_style(theme, status);
-            
+
             text_input::Style {
                 border: Border {
-                    color: colors.orange,  // Orange border for warnings
+                    color: colors.orange, // Orange border for warnings
                     width: 1.0,
                     ..base_style.border
                 },
@@ -1198,135 +1304,131 @@ impl Modern {
     pub fn primary_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         |theme| {
             let colors = get_theme_colors(theme);
-            
+
             text::Style {
                 color: Some(colors.text),
             }
         }
     }
-    
+
     /// Get an Modern-style secondary text style (supporting information)
     pub fn secondary_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         |theme| {
             let colors = get_theme_colors(theme);
-            
+
             text::Style {
                 color: Some(colors.secondary_text),
             }
         }
     }
-    
+
     /// Get an Modern-style tertiary text style (less important information)
     pub fn tertiary_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         |theme| {
             let colors = get_theme_colors(theme);
-            
+
             text::Style {
                 color: Some(colors.tertiary_text),
             }
         }
     }
-    
+
     /// Get an Modern-style link text style
     pub fn link_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         |theme| {
             let colors = get_theme_colors(theme);
-            
+
             text::Style {
                 color: Some(colors.link),
             }
         }
     }
-    
+
     /// Get text styled with a specific color for both light and dark modes
     pub fn colored_text<'a>(
         light_color: Color,
-        dark_color: Color
+        dark_color: Color,
     ) -> impl Fn(&Theme) -> text::Style + 'a {
         move |theme| {
             let is_dark = is_dark_mode(theme);
             let color = if is_dark { dark_color } else { light_color };
-            
-            text::Style {
-                color: Some(color),
-            }
+
+            text::Style { color: Some(color) }
         }
     }
-    
+
     /// Get text in Modern's red color
     pub fn red_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::RED, colors::system::RED_DARK)
     }
-    
+
     /// Get text in Modern's blue color
     pub fn blue_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::BLUE, colors::system::BLUE_DARK)
     }
-    
+
     /// Get text in Modern's green color
     pub fn green_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::GREEN, colors::system::GREEN_DARK)
     }
-    
+
     /// Get text in Modern's orange color
     pub fn orange_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::ORANGE, colors::system::ORANGE_DARK)
     }
-    
+
     /// Get text in Modern's yellow color
     pub fn yellow_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::YELLOW, colors::system::YELLOW_DARK)
     }
-    
+
     /// Get text in Modern's purple color
     pub fn purple_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::PURPLE, colors::system::PURPLE_DARK)
     }
-    
+
     /// Get text in Modern's pink color
     pub fn pink_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::PINK, colors::system::PINK_DARK)
     }
-    
+
     /// Get text in Modern's teal color
     pub fn teal_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::TEAL, colors::system::TEAL_DARK)
     }
-    
+
     /// Get text in Modern's indigo color
     pub fn indigo_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::INDIGO, colors::system::INDIGO_DARK)
     }
-    
+
     /// Get text in Modern's mint color
     pub fn mint_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::MINT, colors::system::MINT_DARK)
     }
-    
+
     /// Get text in Modern's brown color
     pub fn brown_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::colored_text(colors::system::BROWN, colors::system::BROWN_DARK)
     }
-    
+
     /// Get a success / positive message text style
     pub fn success_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::green_text()
     }
-    
+
     /// Get a warning message text style
     pub fn warning_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::orange_text()
     }
-    
+
     /// Get an error / destructive message text style
     pub fn error_text<'a>() -> impl Fn(&Theme) -> text::Style + 'a {
         Self::red_text()
     }
 
     // Simple conditional text if you don't need/want a warning state
-    pub fn validated_text<'a>(
-        has_error: bool
-    ) -> impl Fn(&Theme) -> text::Style + 'a {
+    pub fn validated_text<'a>(has_error: bool) -> impl Fn(&Theme) -> text::Style + 'a {
         move |theme| {
             if has_error {
                 (Self::error_text())(theme)
@@ -1346,7 +1448,7 @@ impl Modern {
     pub fn combo_box_menu<'a>() -> impl Fn(&Theme) -> menu::Style + 'a {
         |theme| {
             let colors = get_theme_colors(theme);
-            
+
             menu::Style {
                 text_color: colors.text,
                 background: Background::Color(colors.card_bg),
@@ -1357,6 +1459,7 @@ impl Modern {
                 },
                 selected_text_color: Color::WHITE,
                 selected_background: Background::Color(colors.blue),
+                shadow: Shadow::default(),
             }
         }
     }
@@ -1412,23 +1515,27 @@ impl Modern {
 fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> button::Style {
     let colors = get_theme_colors(theme);
     let is_dark = is_dark_mode(theme);
-    
+
     // Function to create the base Modern style with rounded corners
     let modern_base = |color: Color, text_color: Color| button::Style {
         background: Some(Background::Color(color)),
         text_color,
         border: Border {
             radius: CORNER_RADIUS.into(), // Modern's rounded corners
-            width: 0.0,         // No border for filled buttons
+            width: 0.0,                   // No border for filled buttons
             color: Color::TRANSPARENT,
         },
         shadow: Shadow {
-            color: Color { a: 0.1, ..Color::BLACK }, 
+            color: Color {
+                a: 0.1,
+                ..Color::BLACK
+            },
             offset: Vector::new(0.0, 1.0),
             blur_radius: 2.0,
         },
+        snap: true,
     };
-    
+
     // Function to create outlined style
     let outlined = |color: Color, text_color: Color| button::Style {
         background: Some(Background::Color(Color::TRANSPARENT)),
@@ -1439,32 +1546,37 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
             color,
         },
         shadow: Shadow::default(),
+        snap: true,
     };
-    
+
     // Function to create a transparent button style (for links/text)
     let transparent = |text_color: Color| button::Style {
         background: Some(Background::Color(Color::TRANSPARENT)),
         text_color,
         border: Border::default(),
         shadow: Shadow::default(),
+        snap: true,
     };
-    
+
     // Base style based on button class
     let base_style = match class {
         style::Button::Primary => modern_base(colors.blue, Color::WHITE),
         style::Button::Secondary => outlined(colors.blue, colors.blue),
         style::Button::Success => modern_base(colors.green, Color::WHITE),
-        style::Button::Warning => modern_base(colors.orange, if is_dark { Color::BLACK } else { Color::WHITE }),
+        style::Button::Warning => modern_base(
+            colors.orange,
+            if is_dark { Color::BLACK } else { Color::WHITE },
+        ),
         style::Button::Danger => modern_base(colors.red, Color::WHITE),
         style::Button::Link => transparent(colors.blue),
         style::Button::System => modern_base(colors.system_bg, colors.text),
         style::Button::Plain => transparent(colors.text),
     };
-    
+
     // Adjust style based on status
     match status {
         ButtonStatus::Active => base_style,
-        
+
         ButtonStatus::Hovered => {
             // For Modern style, make buttons slightly lighter/darker on hover
             let adjust_color = |color: Color| -> Color {
@@ -1486,7 +1598,7 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                     }
                 }
             };
-            
+
             match class {
                 style::Button::Link | style::Button::Plain => {
                     // For text/links, just adjust the text color
@@ -1494,7 +1606,7 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                         text_color: base_style.text_color.scale_alpha(0.8),
                         ..base_style
                     }
-                },
+                }
                 _ => {
                     // For other buttons, adjust the background
                     if let Some(Background::Color(color)) = base_style.background {
@@ -1507,8 +1619,8 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                     }
                 }
             }
-        },
-        
+        }
+
         ButtonStatus::Pressed => {
             // For pressed state, make buttons even more light/dark and reduce shadow
             let adjust_color = |color: Color| -> Color {
@@ -1530,18 +1642,18 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                     }
                 }
             };
-            
+
             let mut pressed_style = base_style;
-            
+
             // Remove shadow when pressed (Modern's buttons appear to press down)
             pressed_style.shadow = Shadow::default();
-            
+
             match class {
                 style::Button::Link | style::Button::Plain => {
                     // For text/links, just adjust the text color more
                     pressed_style.text_color = base_style.text_color.scale_alpha(0.6);
                     pressed_style
-                },
+                }
                 _ => {
                     // For other buttons, adjust the background more
                     if let Some(Background::Color(color)) = base_style.background {
@@ -1550,8 +1662,8 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                     pressed_style
                 }
             }
-        },
-        
+        }
+
         ButtonStatus::Disabled => {
             // For disabled state, reduce opacity
             button::Style {
@@ -1565,10 +1677,10 @@ fn button_style(theme: &Theme, class: &style::Button, status: ButtonStatus) -> b
                     ..base_style.border
                 },
                 shadow: Shadow::default(), // No shadow for disabled buttons
+                snap: true,
             }
-        },
+        }
     }
-    
 }
 
 // Define an enum for validation states

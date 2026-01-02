@@ -10,11 +10,9 @@ keywords = ["iced", "gui", "modern", "theme", "palette"]
 categories = ["gui"]
 
 [dependencies]
-iced = { version = "0.14.0-dev"}
-palette = "0.7.5" 
+iced = "0.14.0"
+palette = "0.7.6" 
 
-[patch.crates-io]
-iced = { git = "https://github.com/iced-rs/iced", rev = "aa633f6832c93d81fc829bcd351b369f0aada282" }
 
 [[example]]
 name = "showcase"
