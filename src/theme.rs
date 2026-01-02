@@ -443,7 +443,7 @@ fn button_disabled_style(base_style: button::Style) -> button::Style {
 
 use iced::widget::button::Status as ButtonStatus;
 use iced::widget::text_input::Status as TextInputStatus;
-use iced::widget::{button, checkbox, combo_box, container, pick_list, radio, text, text_input};
+use iced::widget::{button, checkbox, container, pick_list, radio, text, text_input};
 
 use crate::colors::*;
 use crate::styles::*;
@@ -760,7 +760,7 @@ impl Modern {
             let is_dark = is_dark_mode(theme);
 
             // Get the base color based on the variant
-            let (base_color, text_color) = match color_variant {
+            let (base_color, _text_color) = match color_variant {
                 TintedButtonColor::Blue => (colors.blue, Color::WHITE),
                 TintedButtonColor::Green => (colors.green, Color::WHITE),
                 TintedButtonColor::Red => (colors.red, Color::WHITE),
@@ -997,7 +997,7 @@ impl Modern {
     /// Get a danger tooltip container style with error styling
     pub fn danger_tooltip_container<'a>() -> impl Fn(&Theme) -> container::Style + 'a {
         move |theme| {
-            let colors = get_theme_colors(theme);
+            let _colors = get_theme_colors(theme);
 
             // Determine if dark mode
             let dark_mode = is_dark_mode(theme);
